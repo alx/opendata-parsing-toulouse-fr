@@ -13,8 +13,19 @@
 /* -----------------------------------------
    Shared Styles
 ----------------------------------------- */
+.chart div {
+  font: 8px sans-serif;
+  background-color: steelblue;
+  text-align: right;
+  padding: 2px;
+  margin: 1px;
+  color: white;
+}
 
-
+.chart rect {
+  stroke: white;
+  fill: steelblue;
+}
 
 /* -----------------------------------------
    Page Name 1

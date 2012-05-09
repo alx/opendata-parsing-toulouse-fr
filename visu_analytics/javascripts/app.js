@@ -94,5 +94,69 @@ jQuery(document).ready(function ($) {
 
 	/* DISABLED BUTTONS ------------- */
 	/* Gives elements with a class of 'disabled' a return: false; */
-  
+
+  d3.json("data_second_turn_bureau.json", function(data){
+
+    data = data.map(function(a){ return a.variations.nul}).sort(function(a, b){return b - a;});
+
+    var height = 15;
+
+    var chart = d3.select("#panel")
+      .append("svg")
+      .attr("class", "chart")
+      .attr("width", 420)
+      .attr("height", height * data.length)
+      .append("g")
+      .attr("transform", "translate(10,15)");
+
+    var x = d3.scale.linear()
+      .domain([d3.min(data), d3.max(data)])
+      .range([100, 420]);
+
+    var y = d3.scale.ordinal()
+      .domain(data)
+      .rangeBands([0, height * data.length]);
+
+    chart.selectAll("line")
+      .data(x.ticks(10))
+      .enter().append("line")
+        .attr("x1", x)
+        .attr("x2", x)
+        .attr("y1", 0)
+        .attr("y2", height * data.length)
+        .style("stroke", "#ccc");
+
+    chart.selectAll(".rule")
+      .data(x.ticks(10))
+      .enter().append("text")
+        .attr("class", "rule")
+        .attr("x", x)
+        .attr("y", 0)
+        .attr("dy", -3)
+        .attr("text-anchor", "middle")
+        .text(String);
+
+    chart.append("line")
+      .attr("y1", 0)
+      .attr("y2", height * data.length)
+      .style("stroke", "#000");
+
+    chart.selectAll("rect")
+      .data(data)
+      .enter().append("rect")
+      .attr("y", y)
+      .attr("width", x)
+      .attr("height", y.rangeBand());
+
+    chart.selectAll("text")
+      .data(data)
+      .enter().append("text")
+        .attr("x", x)
+        .attr("y", function(d) { return y(d) + y.rangeBand() / 2; })
+        .attr("dx", -3) // padding-right
+        .attr("dy", ".35em") // vertical-align: middle
+        .attr("text-anchor", "end") // text-align: right
+        .text(String);
+
+  });
 });
